@@ -2,54 +2,50 @@ import React from 'react';
 
 const Profile = () => {
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-100 min-h-screen">
-      {/* Header Profil */}
-      <div className="flex gap-8 items-start mb-10">
-        {/* Photo de profil */}
-        <div className="w-48 h-48 bg-gray-300 rounded-2xl border-2 border-black flex items-center justify-center">
-          <span className="text-gray-600">photo de profil</span>
+    <div className="max-w-6xl mx-auto p-6">
+      {/* Haut du profil */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+        
+        {/* Photo de profil type accueil */}
+        <div className="cadre-gris h-64 w-full text-lg font-medium">
+          photo de profil
         </div>
 
-        {/* Infos et Bio */}
-        <div className="flex-1 space-y-4">
+        {/* Infos et Biographie */}
+        <div className="md:col-span-2 flex flex-col gap-6">
           <div className="flex gap-4">
-            <div className="bg-white px-4 py-1 rounded-full border border-black text-sm">abonnements 0</div>
-            <div className="bg-white px-4 py-1 rounded-full border border-black text-sm">abonnés 0</div>
+            <div className="bulle-custom flex-1 text-center">Nom</div>
+            <div className="bulle-custom flex-1 text-center">Prénom</div>
+            <div className="flex gap-2">
+               {[1, 2, 3].map(i => (
+                 <div key={i} className="w-10 h-10 border-2 border-purple-600 rounded-full"></div>
+               ))}
+            </div>
           </div>
           
-          <div className="bg-gray-200 p-6 rounded-2xl border border-black h-24 flex items-center justify-center">
-            biographie
+          {/* Bloc Biographie type accueil */}
+          <div className="cadre-gris h-32 w-full justify-start items-start text-left italic">
+            biographie...
           </div>
 
-          <button className="bg-gray-300 px-6 py-2 rounded-full border border-black font-semibold">
+          <button className="bulle-custom w-max hover:bg-purple-900 transition-colors">
             modifier mon profil
           </button>
         </div>
-
-        {/* Réseaux (Comptes Pro) */}
-        <div className="flex flex-col gap-2">
-          {['I', 'S', 'T'].map(letter => (
-            <div key={letter} className="w-10 h-10 bg-white border border-black rounded-full flex items-center justify-center font-bold">
-              {letter}
-            </div>
-          ))}
-        </div>
       </div>
 
-      {/* Onglets / Sélections */}
-      <div className="flex justify-around mb-4 text-sm font-bold uppercase">
-        <span className="cursor-pointer border-b-2 border-black">mes playlists</span>
-        <span className="cursor-pointer text-gray-500">mes artistes favoris</span>
-        <span className="cursor-pointer text-gray-500">mes évènements</span>
+      {/* Onglets de navigation bas */}
+      <div className="flex justify-around border-b border-gray-800 mb-8 pb-3">
+        <span className="text-purple-400 font-bold border-b-2 border-purple-400 cursor-pointer">MES PLAYLISTS</span>
+        <span className="text-gray-500 cursor-pointer hover:text-white">MES ARTISTES FAVORIS</span>
+        <span className="text-gray-500 cursor-pointer hover:text-white">MES ÉVÈNEMENTS</span>
       </div>
 
-      {/* Liste des éléments */}
-      <div className="space-y-3">
-        {[1, 2, 3].map((item) => (
-          <div key={item} className="bg-gray-600 text-white p-4 rounded-xl flex justify-center italic">
-            playlist {item} / artiste {item} / évènement {item}
-          </div>
-        ))}
+      {/* Liste des playlists avec le style gris */}
+      <div className="flex flex-col gap-4">
+        <div className="cadre-gris py-4 w-full">playlist 1 / artiste 1 / évènement 1</div>
+        <div className="cadre-gris py-4 w-full">playlist 2 / artiste 2 / évènement 2</div>
+        <div className="cadre-gris py-4 w-full">playlist 3 / artiste 3 / évènement 3</div>
       </div>
     </div>
   );
