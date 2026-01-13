@@ -2,50 +2,44 @@ import React from 'react';
 
 const Profile = () => {
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Haut du profil */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-        
-        {/* Photo de profil type accueil */}
-        <div className="cadre-gris h-64 w-full text-lg font-medium">
+    <div className="max-w-5xl mx-auto p-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
+        {/* Photo de profil */}
+        <div className="cadre-gris h-64 w-full text-lg font-medium border-dashed border-2">
           photo de profil
         </div>
 
         {/* Infos et Biographie */}
         <div className="md:col-span-2 flex flex-col gap-6">
-          <div className="flex gap-4">
-            <div className="bulle-custom flex-1 text-center">Nom</div>
-            <div className="bulle-custom flex-1 text-center">Prénom</div>
-            <div className="flex gap-2">
-               {[1, 2, 3].map(i => (
-                 <div key={i} className="w-10 h-10 border-2 border-purple-600 rounded-full"></div>
-               ))}
-            </div>
+          <div className="flex flex-wrap gap-4">
+            <div className="bulle-custom flex-1 text-center py-3">Nom</div>
+            <div className="bulle-custom flex-1 text-center py-3">Prénom</div>
           </div>
           
-          {/* Bloc Biographie type accueil */}
-          <div className="cadre-gris h-32 w-full justify-start items-start text-left italic">
-            biographie...
+          <div className="cadre-gris h-32 w-full justify-start items-start p-6 italic text-gray-300">
+            "Passionné de musique et de concerts live..."
           </div>
 
-          <button className="bulle-custom w-max hover:bg-purple-900 transition-colors">
+          <button className="bulle-custom w-max px-8 py-3">
             modifier mon profil
           </button>
         </div>
       </div>
 
-      {/* Onglets de navigation bas */}
-      <div className="flex justify-around border-b border-gray-800 mb-8 pb-3">
-        <span className="text-purple-400 font-bold border-b-2 border-purple-400 cursor-pointer">MES PLAYLISTS</span>
-        <span className="text-gray-500 cursor-pointer hover:text-white">MES ARTISTES FAVORIS</span>
-        <span className="text-gray-500 cursor-pointer hover:text-white">MES ÉVÈNEMENTS</span>
+      {/* Onglets */}
+      <div className="flex justify-around border-b border-[#2d2d44] mb-8 pb-3">
+        <span className="text-[#a78bfa] font-bold border-b-2 border-[#5b21b6] pb-3 cursor-pointer">MES PLAYLISTS</span>
+        <span className="text-gray-500 cursor-pointer hover:text-white transition-colors">FAVORIS</span>
+        <span className="text-gray-500 cursor-pointer hover:text-white transition-colors">ÉVÈNEMENTS</span>
       </div>
 
-      {/* Liste des playlists avec le style gris */}
       <div className="flex flex-col gap-4">
-        <div className="cadre-gris py-4 w-full">playlist 1 / artiste 1 / évènement 1</div>
-        <div className="cadre-gris py-4 w-full">playlist 2 / artiste 2 / évènement 2</div>
-        <div className="cadre-gris py-4 w-full">playlist 3 / artiste 3 / évènement 3</div>
+        {[1, 2, 3].map(i => (
+          <div key={i} className="cadre-gris py-5 w-full justify-between px-8 hover:bg-[#1f1f35]">
+            <span className="font-medium text-gray-200">Élément sauvegardé #{i}</span>
+            <span className="text-[#5b21b6]">➔</span>
+          </div>
+        ))}
       </div>
     </div>
   );
