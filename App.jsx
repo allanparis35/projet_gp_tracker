@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Register from './pages/register';
 import Account from './pages/account';
+import Research from './pages/research';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -10,17 +11,46 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (currentPage === 'home') {
+    const fetchArtists = async () => {
+      // 1. On s'assure que le mode chargement est actif au début
       setLoading(true);
-      fetch('http://localhost:8080/api/artists')
-        .then(res => res.json())
-        .then(data => {
-          setArtistes(data);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }
-  }, [currentPage]);
+      
+      // 2. Récupérer le token stocké
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        console.error("Aucun token trouvé, l'utilisateur n'est probablement pas connecté");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:8080/artists', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Envoyer le token au backend pour l'authentification JWT
+            'Authorization': `Bearer ${token}`
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // On met à jour la liste des artistes avec les données du backend
+          setArtistes(data || []); 
+        } else {
+          console.error("Erreur lors de la récupération :", response.status);
+        }
+      } catch (error) {
+        console.error("Erreur réseau (le backend est-il lancé ?) :", error);
+      } finally {
+        // 3. Quoi qu'il arrive (succès ou erreur), on arrête le chargement
+        setLoading(false);
+      }
+    };
+
+    fetchArtists();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#08070a] text-white">
@@ -28,6 +58,7 @@ function App() {
       <nav className="sticky top-0 z-50 flex items-center gap-4 p-5 bg-[#08070a]/95 border-b border-[#2d2d44] backdrop-blur-lg">
         <div className="flex gap-4">
           <button onClick={() => setCurrentPage('home')} className={`nav-button ${currentPage === 'home' ? 'active' : ''}`}>Accueil</button>
+          <button onClick={() => setCurrentPage('research')} className={`nav-button ${currentPage === 'research' ? 'active' : ''}`}>Recherche</button>
           <button onClick={() => setCurrentPage('profile')} className={`nav-button ${currentPage === 'profile' ? 'active' : ''}`}>Profil</button>
         </div>
         
@@ -46,7 +77,7 @@ function App() {
               Évènement
             </div>
             
-            {/* TENDANCES */}
+            {/* TENDANCES (Exemple statique) */}
             <div className="w-full mb-20">
               <h2 className="text-[#c4b5fd] mb-8 italic text-sm uppercase tracking-[0.2em] font-bold border-l-4 border-[#5b21b6] pl-4">
                 Tendances
@@ -62,41 +93,49 @@ function App() {
               </div>
             </div>
 
-            {/* ARTISTES */}
+            {/* SECTION ARTISTES (Dynamique via le Backend) */}
             <div className="w-full">
               <h2 className="text-[#c4b5fd] mb-8 italic text-sm uppercase tracking-[0.2em] font-bold border-l-4 border-[#5b21b6] pl-4">
                 Artistes
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                {loading ? (
-                  <div className="col-span-full text-center py-20 text-[#9f7aea] animate-pulse font-bold uppercase tracking-widest">
-                    Chargement...
-                  </div>
-                ) : (
-                  artistes.map(artiste => (
-                    <div key={artiste.id} className="cadre-gris aspect-[3/4] flex flex-col p-0 overflow-hidden group border-2">
-                      <div className="w-full h-2/3 overflow-hidden bg-[#0b0b0f]">
-                        <img 
-                          src={artiste.image || 'https://via.placeholder.com/400x600'} 
-                          alt={artiste.name} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
-                        />
+              
+              {loading ? (
+                <div className="col-span-full text-center py-20 text-[#9f7aea] animate-pulse font-bold uppercase tracking-widest">
+                  Chargement des artistes...
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                  {artistes.length > 0 ? (
+                    artistes.map(artiste => (
+                      <div key={artiste.id} className="cadre-gris aspect-[3/4] flex flex-col p-0 overflow-hidden group border-2">
+                        <div className="w-full h-2/3 overflow-hidden bg-[#0b0b0f]">
+                          <img 
+                            src={artiste.image || 'https://via.placeholder.com/400x600'} 
+                            alt={artiste.name} 
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
+                          />
+                        </div>
+                        <div className="h-1/3 flex items-center justify-center bg-[#13131a] border-t-2 border-[#5b21b6]/30 group-hover:border-[#5b21b6]">
+                          <span className="font-bold uppercase tracking-widest text-center px-2 group-hover:text-[#c4b5fd]">
+                            {artiste.name}
+                          </span>
+                        </div>
                       </div>
-                      <div className="h-1/3 flex items-center justify-center bg-[#13131a] border-t-2 border-[#5b21b6]/30 group-hover:border-[#5b21b6]">
-                        <span className="font-bold uppercase tracking-widest text-center px-2 group-hover:text-[#c4b5fd]">
-                          {artiste.name}
-                        </span>
-                      </div>
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center py-10 text-gray-500 italic">
+                      Aucun artiste trouvé dans la base de données.
                     </div>
-                  ))
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
 
+        {currentPage === 'research' && <Research />}
         {currentPage === 'profile' && <Profile />}
-
+        
         {currentPage === 'account' && (
           <Account
             onLoginSuccess={() => setCurrentPage('home')}
