@@ -134,6 +134,7 @@ function App() {
         )}
 
         {currentPage === 'research' && <Research />}
+        
         {currentPage === 'profile' && <Profile />}
         
         {currentPage === 'account' && (
