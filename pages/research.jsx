@@ -30,8 +30,6 @@ const Research = () => {
           "Les résultats de recherche s'afficheront ici..."
         </div>
       </div>
-
-      {/* --- VOLET COULISSANT (SIDEBAR) --- */}
       
       {/* Overlay sombre (cliquer ici ferme le volet) */}
       <div 
