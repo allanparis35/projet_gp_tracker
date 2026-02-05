@@ -1,4 +1,5 @@
 import React from 'react';
+import Trending from './Trending';
 
 const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingConcerts = false }) => {
   return (
@@ -31,41 +32,7 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
       </section>
 
       {/* Section Tendances */}
-      <section className="mb-16">
-        <h2 className="text-[#a78bfa] mb-6 italic text-sm uppercase tracking-widest ml-2">
-          tendances :
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {/* Exemple statique : remplacez par données réelles si besoin */}
-          {[
-            { id: 1, title: 'RnBoi', img: 'images/rnboi.jpg' },
-            { id: 2, title: 'Eminem', img: 'images/eminem.jpg' },
-            { id: 3, title: 'Gims', img: 'images/gims.jpg' },
-            { id: 4, title: 'Theodora', img: 'images/theodora.jpg' },
-          ].map((item) => (
-            <div
-              key={item.id}
-              className="cadre-gris aspect-[3/4] relative overflow-hidden rounded-lg cursor-pointer transform transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_10px_40px_rgba(91,33,182,0.18)]"
-            >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover opacity-85"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[rgba(6,6,23,0.65)] to-[rgba(0,0,0,0.08)]"></div>
-
-              <div className="p-4 absolute bottom-4 left-4 right-4">
-                <span className="inline-block text-xs text-[#e9d5ff] font-semibold italic px-3 py-1 rounded-md bg-[rgba(91,33,182,0.12)] backdrop-blur-md">
-                  en vedette
-                </span>
-                <h3 className="mt-3 text-white font-bold uppercase tracking-wide text-sm">
-                  {item.title}
-                </h3>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+<Trending />
 
       {/* Section Artistes */}
       <section>
