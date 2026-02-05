@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Home = ({ artistes = [], loading = false }) => {
+const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingConcerts = false }) => {
   return (
     <div className="p-4 md:p-8">
       {/* Titre central */}
@@ -9,6 +9,26 @@ const Home = ({ artistes = [], loading = false }) => {
           Evenement
         </h1>
       </div>
+
+      {/* Section Événements */}
+      <section className="mb-12">
+        <h2 className="text-[#c4b5fd] mb-6 italic text-sm uppercase tracking-widest ml-2">Prochains concerts :</h2>
+        {loadingConcerts ? (
+          <p className="col-span-full text-center py-10 text-gray-400">Chargement des concerts...</p>
+        ) : concerts.length === 0 ? (
+          <p className="col-span-full text-center py-10 text-gray-400">Aucun concert trouvé.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {concerts.map((c) => (
+              <div key={c.id} className="cadre-gris p-4 border border-[#2d2d44] hover:border-[#5b21b6] transition-all">
+                <h3 className="font-bold">{c.artist}</h3>
+                <p className="text-sm text-gray-400">{new Date(c.date).toLocaleDateString()} - {c.venue}</p>
+                <p className="mt-4 font-bold">{c.price} €</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* Section Tendances */}
       <section className="mb-16">
@@ -53,7 +73,7 @@ const Home = ({ artistes = [], loading = false }) => {
           artistes :
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {loading ? (
+          {loadingArtists ? (
             <p className="col-span-full text-center py-10 text-gray-400">Chargement de la scène...</p>
           ) : artistes.length === 0 ? (
             <p className="col-span-full text-center py-10 text-gray-400">Aucun artiste trouvé.</p>
