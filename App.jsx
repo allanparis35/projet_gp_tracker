@@ -7,7 +7,7 @@ import Research from './pages/research';
 
 function App() {
   // On initialise la page en fonction de la présence du token
-  const [currentPage, setCurrentPage] = useState(localStorage.getItem('token') ? 'home' : 'account');
+  const [currentPage, setCurrentPage] = useState(localStorage.getItem('token') ? 'home' : 'home');
   const [artistes, setArtistes] = useState([]);
   const [concerts, setConcerts] = useState([]);
   const [loadingArtists, setLoadingArtists] = useState(false);

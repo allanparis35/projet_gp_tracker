@@ -38,10 +38,10 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {/* Exemple statique : remplacez par données réelles si besoin */}
           {[
-            { id: 1, title: 'Mainstage', img: 'https://via.placeholder.com/400x560?text=Mainstage' },
-            { id: 2, title: 'After Party', img: 'https://via.placeholder.com/400x560?text=After+Party' },
-            { id: 3, title: 'Acoustic', img: 'https://via.placeholder.com/400x560?text=Acoustic' },
-            { id: 4, title: 'VIP', img: 'https://via.placeholder.com/400x560?text=VIP' },
+            { id: 1, title: 'RnBoi', img: 'images/rnboi.jpg' },
+            { id: 2, title: 'Eminem', img: 'images/eminem.jpg' },
+            { id: 3, title: 'Gims', img: 'images/gims.jpg' },
+            { id: 4, title: 'Theodora', img: 'images/theodora.jpg' },
           ].map((item) => (
             <div
               key={item.id}
