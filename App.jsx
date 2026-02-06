@@ -19,10 +19,12 @@ function App() {
       setLoadingArtists(true);
       console.log("Tentative de récupération des artistes...");
 
+      const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:8080/artists', {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
       });
 
@@ -47,7 +49,14 @@ function App() {
     try {
       setLoadingConcerts(true);
       console.log('Récupération des concerts...');
-      const response = await fetch('http://localhost:8080/concerts', { method: 'GET' });
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:8080/concerts', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setConcerts(Array.isArray(data) ? data : []);
@@ -76,6 +85,7 @@ function App() {
   const handleLoginSuccess = () => {
     setCurrentPage('home');
     fetchArtists(); // On recharge immédiatement après la connexion
+    fetchConcerts();
   };
 
   return (
