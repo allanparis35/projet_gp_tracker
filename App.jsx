@@ -82,9 +82,13 @@ function App() {
 
   // Chargement des artistes et concerts au démarrage
   useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
     fetchArtists();
     fetchConcerts();
-  }, [fetchArtists, fetchConcerts]);
+  }
+}, [fetchArtists, fetchConcerts]);
+
 
   const handleLogout = () => {
     localStorage.removeItem('token');
