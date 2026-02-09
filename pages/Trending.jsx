@@ -19,7 +19,7 @@ const ArtistModal = ({ artist, onClose }) => {
         <div className="flex flex-col md:flex-row gap-12 items-start">
           <div className="md:w-1/3 w-full">
             <img
-              src={artist.image || '/images/placeholder.png'}
+              src={artist.image || 'images'}
               alt={artist.name}
               className="w-full h-[500px] object-cover rounded-3xl border border-[#2d2d44] shadow-2xl"
             />

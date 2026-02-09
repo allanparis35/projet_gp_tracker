@@ -96,29 +96,34 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
           <p className="text-center py-10 text-gray-400">Aucun artiste trouvé.</p>
         ) : (
           <div className="relative group">
-            {/* Scroll Container */}
-            <div 
-              ref={scrollArtistsRef}
-              className="flex gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
-              style={{ scrollBehavior: 'smooth' }}
-            >
-              {uniqueArtists.map((artiste) => (
-                <div 
-                  key={artiste.id} 
-                  className="flex-shrink-0 w-72 cadre-gris aspect-[3/4] overflow-hidden rounded-lg snap-start"
-                >
-                  <img
-                    src={artiste.image || 'https://via.placeholder.com/300'}
-                    alt={artiste.name}
-                    className="w-full h-2/3 object-cover border-b border-[#2d2d44]"
-                  />
-                  <div className="p-4 text-center h-1/3 flex items-center justify-center">
-                    <span className="font-bold uppercase tracking-wider text-sm">{artiste.name}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* Scroll Container */}
+      <div 
+        ref={scrollArtistsRef}
+        className="flex gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
+        style={{ scrollBehavior: 'smooth' }}
+      >
+    {uniqueArtists.map((artiste) => (
+    <div 
+      key={artiste.id} 
+      // Ajout de "relative" pour que le texte puisse se positionner par-dessus
+      className="relative flex-shrink-0 w-72 cadre-gris aspect-[3/4] overflow-hidden rounded-lg snap-start"
+    >
+      {/* L'image prend toute la place */}
+      <img
+        src={artiste.image || 'images/daftpunk.jpg'}
+        alt={artiste.name}
+        className="w-full h-full object-cover border-b border-[#2d2d44]"
+      />
 
+      {/* Le conteneur du texte est "absolute" */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 text-center bg-gradient-to-t from-black/80 to-transparent">
+          <span className="font-bold uppercase tracking-wider text-sm text-white">
+                 {artiste.name}
+               </span>
+              </div>
+             </div>
+               ))}
+            </div>
             {/* Navigation Buttons */}
             <button
               onClick={() => scroll(scrollArtistsRef, 'left')}
