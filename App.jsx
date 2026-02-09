@@ -31,7 +31,12 @@ function App() {
       if (response.ok) {
         const data = await response.json();
         console.log("Données reçues du serveur :", data);
-        setArtistes(Array.isArray(data) ? data : []);
+        if (Array.isArray(data)) {
+          const uniq = Array.from(new Map(data.map(a => [a.id, a])).values());
+          setArtistes(uniq);
+        } else {
+          setArtistes([]);
+        }
       } else {
         console.error("Erreur serveur code :", response.status);
         if (response.status === 401) {
@@ -59,7 +64,12 @@ function App() {
       });
       if (response.ok) {
         const data = await response.json();
-        setConcerts(Array.isArray(data) ? data : []);
+        if (Array.isArray(data)) {
+          const uniq = Array.from(new Map(data.map(c => [c.id, c])).values());
+          setConcerts(uniq);
+        } else {
+          setConcerts([]);
+        }
       } else {
         console.error('Erreur lors de la récupération des concerts', response.status);
       }

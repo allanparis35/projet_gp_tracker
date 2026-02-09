@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Trending from './Trending';
 
 const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingConcerts = false }) => {
+  const scrollConcertsRef = useRef(null);
+  const scrollArtistsRef = useRef(null);
+
+  // Deduplication globale pour éviter les doublons
+  const deduplicateById = (arr) => {
+    const seen = new Set();
+    return arr.filter(item => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    });
+  };
+
+  const uniqueConcerts = deduplicateById(concerts);
+  const uniqueArtists = deduplicateById(artistes);
+
+  const scroll = (containerRef, direction) => {
+    if (containerRef.current) {
+      const scrollAmount = 300;
+      if (direction === 'left') {
+        containerRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <div className="p-4 md:p-8">
       {/* Titre central */}
@@ -11,54 +38,102 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
         </h1>
       </div>
 
-      {/* Section Événements */}
-      <section className="mb-12">
+      {/* Section Événements - HORIZONTAL SCROLL */}
+      <section className="mb-16">
         <h2 className="text-[#c4b5fd] mb-6 italic text-sm uppercase tracking-widest ml-2">Prochains concerts :</h2>
         {loadingConcerts ? (
-          <p className="col-span-full text-center py-10 text-gray-400">Chargement des concerts...</p>
-        ) : concerts.length === 0 ? (
-          <p className="col-span-full text-center py-10 text-gray-400">Aucun concert trouvé.</p>
+          <p className="text-center py-10 text-gray-400">Chargement des concerts...</p>
+        ) : uniqueConcerts.length === 0 ? (
+          <p className="text-center py-10 text-gray-400">Aucun concert trouvé.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {concerts.map((c) => (
-              <div key={c.id} className="cadre-gris p-4 border border-[#2d2d44] hover:border-[#5b21b6] transition-all">
-                <h3 className="font-bold">{c.artist}</h3>
-                <p className="text-sm text-gray-400">{new Date(c.date).toLocaleDateString()} - {c.venue}</p>
-                <p className="mt-4 font-bold">{c.price} €</p>
-              </div>
-            ))}
+          <div className="relative group">
+            {/* Scroll Container */}
+            <div 
+              ref={scrollConcertsRef}
+              className="flex gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              {uniqueConcerts.map((c) => (
+                <div 
+                  key={c.id} 
+                  className="flex-shrink-0 w-80 cadre-gris p-6 border border-[#2d2d44] hover:border-[#5b21b6] transition-all snap-start"
+                >
+                  <h3 className="font-bold text-lg">{c.artist_id ? `Pass #${c.artist_id}` : 'Concert'}</h3>
+                  <p className="text-sm text-gray-400 mt-2">{new Date(c.date).toLocaleDateString()} - {c.location}</p>
+                  <p className="mt-6 font-bold text-[#a78bfa] text-xl">{((c.price_cents || 0) / 100).toFixed(2)} €</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={() => scroll(scrollConcertsRef, 'left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 bg-[#5b21b6]/30 hover:bg-[#5b21b6]/60 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => scroll(scrollConcertsRef, 'right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 bg-[#5b21b6]/30 hover:bg-[#5b21b6]/60 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+            >
+              →
+            </button>
           </div>
         )}
       </section>
 
       {/* Section Tendances */}
-<Trending />
+      <Trending />
 
-      {/* Section Artistes */}
+      {/* Section Artistes - HORIZONTAL SCROLL */}
       <section>
         <h2 className="text-[#a78bfa] mb-6 italic text-sm uppercase tracking-widest ml-2">
           artistes :
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {loadingArtists ? (
-            <p className="col-span-full text-center py-10 text-gray-400">Chargement de la scène...</p>
-          ) : artistes.length === 0 ? (
-            <p className="col-span-full text-center py-10 text-gray-400">Aucun artiste trouvé.</p>
-          ) : (
-            artistes.map((artiste) => (
-              <div key={artiste.id} className="cadre-gris aspect-[3/4] flex-col gap-4 p-0 overflow-hidden rounded-lg">
-                <img
-                  src={artiste.image || 'https://via.placeholder.com/300'}
-                  alt={artiste.name}
-                  className="w-full h-2/3 object-cover border-b border-[#2d2d44]"
-                />
-                <div className="p-4 text-center">
-                  <span className="font-bold uppercase tracking-wider">{artiste.name}</span>
+        {loadingArtists ? (
+          <p className="text-center py-10 text-gray-400">Chargement de la scène...</p>
+        ) : uniqueArtists.length === 0 ? (
+          <p className="text-center py-10 text-gray-400">Aucun artiste trouvé.</p>
+        ) : (
+          <div className="relative group">
+            {/* Scroll Container */}
+            <div 
+              ref={scrollArtistsRef}
+              className="flex gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              {uniqueArtists.map((artiste) => (
+                <div 
+                  key={artiste.id} 
+                  className="flex-shrink-0 w-72 cadre-gris aspect-[3/4] overflow-hidden rounded-lg snap-start"
+                >
+                  <img
+                    src={artiste.image || 'https://via.placeholder.com/300'}
+                    alt={artiste.name}
+                    className="w-full h-2/3 object-cover border-b border-[#2d2d44]"
+                  />
+                  <div className="p-4 text-center h-1/3 flex items-center justify-center">
+                    <span className="font-bold uppercase tracking-wider text-sm">{artiste.name}</span>
+                  </div>
                 </div>
-              </div>
-            ))
-          )}
-        </div>
+              ))}
+            </div>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={() => scroll(scrollArtistsRef, 'left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 bg-[#5b21b6]/30 hover:bg-[#5b21b6]/60 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => scroll(scrollArtistsRef, 'right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 bg-[#5b21b6]/30 hover:bg-[#5b21b6]/60 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+            >
+              →
+            </button>
+          </div>
+        )}
       </section>
     </div>
   );
