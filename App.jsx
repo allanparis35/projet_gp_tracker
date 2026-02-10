@@ -4,6 +4,9 @@ import Profile from './pages/Profile';
 import Register from './pages/register';
 import Account from './pages/account';
 import Research from './pages/research';
+import EventDetail from './pages/EventDetail';
+import Trending from './pages/Trending';
+
 
 function App() {
   // On initialise la page en fonction de la présence du token
@@ -12,6 +15,7 @@ function App() {
   const [concerts, setConcerts] = useState([]);
   const [loadingArtists, setLoadingArtists] = useState(false);
   const [loadingConcerts, setLoadingConcerts] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
 
   // useCallback permet de stabiliser la fonction pour l'utiliser dans useEffect
   const fetchArtists = useCallback(async () => {
@@ -152,12 +156,23 @@ function App() {
             concerts={concerts}
             loadingArtists={loadingArtists}
             loadingConcerts={loadingConcerts}
+            onSelectConcert={(concertId) => {
+              setSelectedEventId(concertId);
+              setCurrentPage('event-detail');
+            }}
           />
         )}
 
         {/* ROUTAGE DES AUTRES PAGES */}
         {currentPage === 'research' && <Research />}
         {currentPage === 'profile'  && <Profile />}
+        {currentPage === 'event-detail' && (
+          <EventDetail 
+            eventId={selectedEventId}
+            concert={concerts.find(c => c.id === selectedEventId)}
+          />
+        )}
+        {currentPage === 'more-artists' && <More_artists artistes={artistes} />}
         
         {currentPage === 'account' && (
           <Account

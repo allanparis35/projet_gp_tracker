@@ -1,7 +1,18 @@
 import React, { useRef } from 'react';
 import Trending from './Trending';
 
-const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingConcerts = false }) => {
+// Base URL du backend (configurable via .env VITE_API_URL), utilisé pour construire des URLs d'images absolues
+const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+function makeFullUrl(path, fallback) {
+  if (!path) return fallback;
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  const base = apiBase.replace(/\/$/, '');
+  if (path.startsWith('/')) return base + path;
+  return base + '/' + path;
+}
+
+const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingConcerts = false, onSelectConcert }) => {
   const scrollConcertsRef = useRef(null);
   const scrollArtistsRef = useRef(null);
 
@@ -56,13 +67,14 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
               {uniqueConcerts.map((c) => (
                 <div 
                   key={c.id} 
-                  className="relative flex-shrink-0 w-80 cadre-gris aspect-[4/5] overflow-hidden rounded-lg snap-start border border-[#2d2d44] hover:border-[#5b21b6] transition-all"
+                  className="relative flex-shrink-0 w-80 cadre-gris aspect-[4/5] overflow-hidden rounded-lg snap-start border border-[#2d2d44] hover:border-[#5b21b6] transition-all cursor-pointer"
+                  onClick={() => onSelectConcert && onSelectConcert(c.id)}
                 >
                   {/* L'image prend toute la place */}
                   <img
-                    src={c.image || 'images/concerts.jpg'}
-                    alt={c.name}
-                    className="w-full h-full object-cover"
+                    src={makeFullUrl(concerts.image_url,)}
+                    alt={concerts.name}
+                    className="w-full h-full object-cover border-b border-[#2d2d44]"
                   />
                   
                   {/* Texte par-dessus l'image */}
@@ -120,7 +132,7 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
     >
       {/* L'image prend toute la place */}
       <img
-        src={artiste.image || 'images/daftpunk.jpg'}
+        src={makeFullUrl(artiste.image_url,)}
         alt={artiste.name}
         className="w-full h-full object-cover border-b border-[#2d2d44]"
       />
