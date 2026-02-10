@@ -62,12 +62,12 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
                   <img
                     src={c.image || 'images/concerts.jpg'}
                     alt={c.name}
-                    className="w-full h-full object-cover bordrer-b border-[#2d2d44]"
+                    className="w-full h-full object-cover"
                   />
                   
                   {/* Texte par-dessus l'image */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
-                    <h3 className="font-bold text-lg">{c.artist_name ? `Pass #${c.artist_id}` : 'Concert'}</h3>
+                    <h3 className="font-bold text-lg">{c.artist_id ? `Pass #${c.artist_id}` : 'Concert'}</h3>
                     <p className="text-sm text-gray-300 mt-2">{new Date(c.date).toLocaleDateString()} - {c.location}</p>
                     <p className="mt-3 font-bold text-[#a78bfa] text-lg">{((c.price_cents || 0) / 100).toFixed(2)} €</p>
                   </div>
