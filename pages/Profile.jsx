@@ -19,7 +19,9 @@ const Profile = () => {
       {/* Header Profil (inchangé) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
         <div className="cadre-gris h-64 w-full flex items-center justify-center border-dashed border-2 rounded-xl">
-          Photo de profil
+          <div className="bg-gray-800 w-full h-full flex items-center justify-center">
+            <img src="images/rnboi.jpg" alt="Photo de profil" className="w-full h-full object-cover rounded-xl" />
+          </div>
         </div>
         <div className="md:col-span-2 flex flex-col gap-6">
           <div className="flex flex-wrap gap-4">
