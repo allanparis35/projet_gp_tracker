@@ -24,7 +24,7 @@ function App() {
       console.log("Tentative de récupération des artistes...");
 
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8080/artists', {
+      const response = await fetch('http://localhost:8080/artists/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function App() {
       setLoadingConcerts(true);
       console.log('Récupération des concerts...');
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8080/concerts', {
+      const response = await fetch('http://localhost:8080/concerts/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
