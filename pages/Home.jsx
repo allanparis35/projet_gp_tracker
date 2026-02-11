@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import Trending from './Trending';
 
-// Base URL du backend (configurable via .env VITE_API_URL), utilisé pour construire des URLs d'images absolues
 const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 function makeFullUrl(path, fallback) {
@@ -73,9 +72,12 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
                   {/* L'image prend toute la place */}
                   <img
                     src={makeFullUrl(concerts.image_url,)}
-                    alt={concerts.name}
+                    alt={c.name}
                     className="w-full h-full object-cover border-b border-[#2d2d44]"
                   />
+                  <p className="absolute bottom-16 left-0 right-0 text-center text-white font-bold">
+                    Places restantes : {c.total_tickets}
+                  </p>
                   
                   {/* Texte par-dessus l'image */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
