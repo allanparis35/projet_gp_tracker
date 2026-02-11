@@ -11,7 +11,7 @@ function makeFullUrl(path, fallback) {
   return base + '/' + path;
 }
 
-const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingConcerts = false, onSelectConcert }) => {
+const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingConcerts = false, onSelectConcert, onSelectArtist }) => {
   const scrollConcertsRef = useRef(null);
   const scrollArtistsRef = useRef(null);
 
@@ -133,26 +133,26 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
         style={{ scrollBehavior: 'smooth' }}
       >
     {uniqueArtists.map((artiste) => (
-    <div 
-      key={artiste.id} 
-      // Ajout de "relative" pour que le texte puisse se positionner par-dessus
-      className="relative flex-shrink-0 w-72 cadre-gris aspect-[3/4] overflow-hidden rounded-lg snap-start"
-    >
-      {/* L'image prend toute la place */}
-      <img
-        src={makeFullUrl(artiste.image_url,)}
-        alt={artiste.name}
-        className="w-full h-full object-cover border-b border-[#2d2d44]"
-      />
+  <div 
+    key={artiste.id} 
+    onClick={() => onSelectArtist && onSelectArtist(artiste.id)}
+    className="relative flex-shrink-0 w-64 cursor-pointer cadre-gris aspect-[3/4] flex flex-col p-0 overflow-hidden group border-2 border-[#2d2d44] hover:border-[#5b21b6] transition-all snap-start"
+  >
+     {/* L'image prend toute la place */}
+    <img
+      src={makeFullUrl(artiste.image_url, '/images/default-artist.jpg')}
+      alt={artiste.name}
+      className="w-full h-full object-cover border-b border-[#2d2d44]"
+    />
 
       {/* Le conteneur du texte est "absolute" */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 text-center bg-gradient-to-t from-black/80 to-transparent">
-          <span className="font-bold uppercase tracking-wider text-sm text-white">
-                 {artiste.name}
-               </span>
-              </div>
-             </div>
-               ))}
+    <div className="absolute bottom-0 left-0 right-0 p-4 text-center bg-gradient-to-t from-black/80 to-transparent">
+      <span className="font-bold uppercase tracking-wider text-sm text-white">
+        {artiste.name}
+      </span>
+    </div>
+  </div>
+))}
             </div>
             {/* Navigation Buttons */}
             <button

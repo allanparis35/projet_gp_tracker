@@ -6,6 +6,7 @@ import Account from './pages/account';
 import Research from './pages/research';
 import EventDetail from './pages/EventDetail';
 import Trending from './pages/Trending';
+import ArtistDetail from './pages/ArtistDetail'
 
 
 function App() {
@@ -16,9 +17,18 @@ function App() {
   const [loadingArtists, setLoadingArtists] = useState(false);
   const [loadingConcerts, setLoadingConcerts] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedArtistId, setSelectedArtistId] = useState(null);
+const [selectedConcertData, setSelectedConcertData] = useState(null);
+  
+const handleSelectConcert = (id) => {
+    // On cherche le concert dans notre liste 'concerts' pour avoir toutes ses infos
+    const found = concerts.find(c => c.id === id); 
+    setSelectedConcertData(found);
+    setSelectedEventId(id);
+    setCurrentPage('event-detail'); // On change l'affichage vers la page d'achat
+  };
 
-  // useCallback permet de stabiliser la fonction pour l'utiliser dans useEffect
-  const fetchArtists = useCallback(async () => {
+const fetchArtists = useCallback(async () => {
     try {
       setLoadingArtists(true);
       console.log("Tentative de récupération des artistes...");
@@ -164,11 +174,17 @@ function App() {
               setSelectedEventId(concertId);
               setCurrentPage('event-detail');
             }}
+            onSelectArtist={(artistId) => {
+      setSelectedArtistId(artistId);
+      setCurrentPage('artist-detail');
+    }}
           />
         )}
 
         {/* ROUTAGE DES AUTRES PAGES */}
-        {currentPage === 'research' && <Research />}
+        {currentPage === 'research' && (
+  <Research onSelectConcert={handleSelectConcert} /> 
+)}
         {currentPage === 'profile'  && <Profile />}
         {currentPage === 'event-detail' && (
           <EventDetail 
@@ -176,7 +192,22 @@ function App() {
             concert={concerts.find(c => c.id === selectedEventId)}
           />
         )}
-        {currentPage === 'more-artists' && <More_artists artistes={artistes} />}
+        {currentPage === 'artist-detail' && (
+          <ArtistDetail 
+            artistId={selectedArtistId} 
+            onBack={() => setCurrentPage('home')} 
+          />
+        )}
+
+        {currentPage === 'more-artists' && (
+  <More_artists 
+    artistes={artistes} 
+    onSelectArtist={(artistId) => {
+      setSelectedArtistId(artistId);
+      setCurrentPage('artist-detail');
+    }}
+  />
+)}  
         
         {currentPage === 'account' && (
           <Account
@@ -192,12 +223,12 @@ function App() {
           />
         )}
       </main>
-
       <footer className="mt-20 py-10 border-t border-[#2d2d44] text-center text-gray-600 text-[10px] uppercase tracking-[0.5em]">
         Groupie Tracker Project — 2026
       </footer>
     </div>
   );
 }
+
 
 export default App;
