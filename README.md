@@ -1,4 +1,5 @@
-# Groupie Tracker
+# 🎵 F.Y.T.by Signal
+## 🇫🇷 Version Française
 
 Plateforme web de decouverte de concerts et de gestion de billetterie, concue pour connecter les fans a leurs artistes preferes.
 
@@ -30,18 +31,9 @@ Groupie Tracker est une application immersive permettant de suivre des artistes,
 
 ### Lancement du Backend (API Go)
 
-Avant de lancer le serveur, vous devez configurer vos variables d'environnement avec vos propres identifiants.
+Avant de lancer le serveur le front vous devez lancer le backend via le repo suivant, il contient sont propre README pour vous guider.
 
-#### Sur Windows (PowerShell)
-```bash
-$env:DATABASE_URL="postgres://<UTILISATEUR>:<MOT_DE_PASSE>@<HOTE>:<PORT>/<NOM_DB>?sslmode=disable"
-$env:JWT_SECRET="<VOTRE_CLE_SECRETE>"
-go run ./cmd/api
-
-### Sur Linux/MacOs
-export DATABASE_URL="postgres://<UTILISATEUR>:<MOT_DE_PASSE>@<HOTE>:<PORT>/<NOM_DB>?sslmode=disable"
-export JWT_SECRET="<VOTRE_CLE_SECRETE>"
-go run ./cmd/api
+https://github.com/enzo959/projet_gp_tracker_backend.git
 
 Lancer le FrontEnd
 cd ui
@@ -61,4 +53,61 @@ Projet_gp_tracker/
 │   ├── App.jsx          
 │   └── main.jsx         
 ├── index.html          
-└── package.json        
+└── package.json      
+
+## 🇬🇧 English Version
+
+A web platform for discovering concerts and managing ticketing, designed to connect fans with their favorite artists.
+
+Table of Contents
+
+About
+
+Installation & Launch
+
+Configuration
+
+Tech Stack
+
+Features
+
+Architecture
+
+About
+
+Groupie Tracker is an immersive application that allows users to follow artists, view their upcoming concert dates, and purchase tickets online. The project focuses on a smooth user experience and a modern interface with a distinctive dark visual identity.
+
+Installation & Launch
+1. Prerequisites
+
+Go (latest stable version)
+
+Node.js and npm (for the React frontend)
+
+PostgreSQL (installed locally or via Docker)
+
+Launching the Backend (Go API)
+
+Before starting the frontend server, you must first start the backend using the following repository. It contains its own README to guide you:
+
+https://github.com/enzo959/projet_gp_tracker_backend.git
+
+Launching the Frontend
+cd ui
+npm install
+npm run dev
+
+Launching Docker
+psql -U <YOUR_USER> -p <YOUR_PORT> -h <YOUR_HOST> -d <YOUR_DATABASE_NAME>
+\c groupie_db
+
+Project Structure
+Projet_gp_tracker/
+├── images/             
+├── src/
+│   ├── node_modules/      
+│   ├── pages/         
+│   ├── App.jsx          
+│   └── main.jsx         
+├── index.html          
+└── package.json 
