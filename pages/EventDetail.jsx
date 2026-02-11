@@ -8,6 +8,12 @@ const EventDetail = ({ eventId, concert: initialConcert }) => {
 
   if (!concert) return <div className="text-white">Concert non trouvé</div>;
 
+  const makeFullUrl = (path, fallback) => {
+  if (!path) return fallback;
+  if (path.startsWith('http')) return path;
+  return `http://localhost:8080${path.startsWith('/') ? '' : '/'}${path}`;
+};
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBuyerInfo(prev => ({ ...prev, [name]: value }));
@@ -46,20 +52,20 @@ const EventDetail = ({ eventId, concert: initialConcert }) => {
 
   return (
     <div className="max-w-5xl mx-auto p-8">
-      {/* Grande Affiche */}
-      <div className="w-full aspect-video bg-gradient-to-b from-[#2d2d44] to-[#1a1a2e] rounded-3xl border-2 border-[#5b21b6] overflow-hidden mb-8 shadow-2xl">
-        {concert.image ? (
-      <img
-        src={makeFullUrl(concert.image_url, '/images/concerts.jpg')}
-         alt={concert.location || 'Concert'}
-         className="w-full h-full object-cover"
-      />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <h1 className="text-3xl font-bold text-gray-400">Image non disponible</h1>
-          </div>
-        )}
-      </div>
+ {/* Grande Affiche */}
+<div className="w-full aspect-video bg-gradient-to-b from-[#2d2d44] to-[#1a1a2e] rounded-3xl border-2 border-[#5b21b6] overflow-hidden mb-8 shadow-2xl">
+  {concert.image_url ? ( // Vérifie si l'URL de l'image existe
+    <img
+      src={makeFullUrl(concert.image_url, '/images/concerts.jpg')}
+      alt={concert.location || 'Concert'}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="w-full h-full flex items-center justify-center">
+      <h1 className="text-3xl font-bold text-gray-400">Image non disponible</h1>
+    </div>
+  )}
+</div>
 
       {/* Infos principales */}
       <div className="mb-8">
@@ -121,7 +127,7 @@ const EventDetail = ({ eventId, concert: initialConcert }) => {
                   value={buyerInfo.firstName}
                   onChange={handleInputChange}
                   className="w-full bg-[#1a1a2e] border border-[#5b21b6] rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-[#7c3aed]"
-                  placeholder="Ex: Allan"
+                  placeholder="Ex: Jean"
                 />
               </div>
               <div>
@@ -132,7 +138,7 @@ const EventDetail = ({ eventId, concert: initialConcert }) => {
                   value={buyerInfo.lastName}
                   onChange={handleInputChange}
                   className="w-full bg-[#1a1a2e] border border-[#5b21b6] rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-[#7c3aed]"
-                  placeholder="Ex: Paris"
+                  placeholder="Ex: Dupont"
                 />
               </div>
             </div>
