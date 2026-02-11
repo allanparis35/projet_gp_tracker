@@ -71,8 +71,8 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
                 >
                   {/* L'image prend toute la place */}
                   <img
-                    src={makeFullUrl(concerts.image_url,)}
-                    alt={c.name}
+                    src={makeFullUrl(c.image_url, '/images/concerts.jpg')}
+                    alt={c.location || 'Concert'}
                     className="w-full h-full object-cover border-b border-[#2d2d44]"
                   />
                   <p className="absolute bottom-16 left-0 right-0 text-center text-white font-bold">
@@ -80,12 +80,18 @@ const Home = ({ artistes = [], concerts = [], loadingArtists = false, loadingCon
                   </p>
                   
                   {/* Texte par-dessus l'image */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
-                    <h3 className="font-bold text-lg">{c.artist_id ? `Pass #${c.artist_id}` : 'Concert'}</h3>
-                    <p className="text-sm text-gray-300 mt-2">{new Date(c.date).toLocaleDateString()} - {c.location}</p>
-                    <p className="mt-3 font-bold text-[#a78bfa] text-lg">{((c.price_cents || 0) / 100).toFixed(2)} €</p>
-                  </div>
-                </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
+                    <h3 className="font-bold text-lg text-white">
+                      {c.artist_name}
+                    </h3>
+                  <p className="text-sm text-gray-300 mt-1">
+                     {new Date(c.date).toLocaleDateString('fr-FR')}
+                  </p>
+                  <p className="mt-2 font-bold text-[#a78bfa] text-xl">
+                   {((c.price_cents || 0) / 100).toFixed(2)} €
+                 </p>
+             </div>
+             </div>
               ))}
             </div>
 

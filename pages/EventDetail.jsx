@@ -70,7 +70,7 @@ const EventDetail = ({ eventId, concert: initialConcert }) => {
       {/* Infos principales */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-white mb-4 uppercase tracking-widest">
-          {concert.artist_id ? `Concert #${concert.artist_id}` : 'Concert'}
+          {concert.artist_name ? `Concert: ${concert.artist_name}` : 'Concert'}
         </h1>
       </div>
 
